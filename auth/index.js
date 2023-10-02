@@ -12,9 +12,6 @@ const { userAuthorization } = require("./middlewares/user");
 // UTILS
 const { comparePassword, hashPassword } = require("./utils/password");
 
-// SERVICES
-const sendEmail = require("./services/sendEmail");
-
 // VALIDATIONS
 const {
   createUser,
@@ -187,14 +184,21 @@ app.post("/request-reset", async (req, res) => {
   const link = `${process.env.FRONTEND_RESET_PASSWORD}?token=${token}`;
 
   try {
-    await sendEmail(
-      user.email,
-      "Password reset",
-      `
-      Ecco il link per resettare la tua password:\n
-      ${link}
-    `
-    );
+    const response = await fetch(`http://notification:3001/send-mail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: user.email,
+        subject: "Password reset",
+        text: `Ecco il link per resettare la tua password:\n${link}`,
+      }),
+    });
+
+    if (!response.ok) throw new Error();
+
+    await response.json();
   } catch (error) {
     return res.status(500).json("Qualcosa è andato storto 😥");
   }
