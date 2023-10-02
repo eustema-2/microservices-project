@@ -242,7 +242,7 @@ app.post("/confirm-reset", async (req, res) => {
     },
   });
 
-  res.json("La password è stata resettata");
+  res.json("La password è stata resettata, puoi procedere con il login");
 });
 
 // 404

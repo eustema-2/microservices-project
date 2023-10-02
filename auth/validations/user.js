@@ -19,6 +19,7 @@ const requestResetPasswordUser = Joi.object({
 const resetPassowrdUser = Joi.object({
   token: Joi.string().required(),
   password: Joi.string().required(),
+  passwordConfirm: Joi.required().valid(Joi.ref("password")),
 });
 
 module.exports = {

@@ -1,4 +1,4 @@
-// const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
 
 async function sendEmail(email, subject, text) {
   const transport = nodemailer.createTransport({
