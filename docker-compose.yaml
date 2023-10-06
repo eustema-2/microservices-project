@@ -60,6 +60,18 @@ services:
     networks:
       - common
 
+  converter:
+    build:
+      dockerfile: Dockerfile
+      context: ./converter
+    container_name: converter
+    restart: always
+    volumes:
+      - .:/app
+      - /app/converter/node_modules
+    networks:
+      - common
+
 volumes:
   auth_data:
     driver: local
