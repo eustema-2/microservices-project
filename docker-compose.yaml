@@ -1,13 +1,23 @@
 version: "3:8"
 services:
+  nginx-proxy:
+    build:
+      dockerfile: Dockerfile
+      context: ./proxy
+    container_name: proxy
+    ports:
+      - 80:80
+    depends_on:
+      - auth
+    networks:
+      - common
+
   auth:
     build:
       dockerfile: Dockerfile
       context: ./auth
     container_name: auth
     restart: always
-    ports:
-      - 3000:3000
     volumes:
       - .:/app
       - /app/auth/node_modules
